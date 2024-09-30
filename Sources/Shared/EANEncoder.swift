@@ -75,7 +75,7 @@ public final class EANEncoder {
         segments(for: ean).flatMap { $0 }
     }
     
-    func segments(for ean: EAN) -> [[Segment]] {
+    private func segments(for ean: EAN) -> [[Segment]] {
         var segments = [Segment.leftMargin, Segment.startStop]
         if ean.isEAN13 {
             let scheme = Encoding.schmes[ean.code[0]] ?? []

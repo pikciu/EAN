@@ -3,13 +3,14 @@ import Foundation
 enum EANChecksum {
     
     static func calculate(for code: [Int]) -> Int {
-        let total = code.enumerated()
+        let total = code.reversed()
+            .enumerated()
             .reduce(0) { total, next in
                 let (index, digit) = next
                 if index % 2 == 0 {
-                    return total + digit
-                } else {
                     return total + digit * 3
+                } else {
+                    return total + digit
                 }
             }
         let result = 10 - total % 10
