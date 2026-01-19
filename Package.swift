@@ -14,6 +14,10 @@ let package = Package(
     ],
     products: [
         .library(
+            name: "EAN",
+            targets: ["EAN"]
+        ),
+        .library(
             name: "EANView",
             targets: ["EANView"]
         ),
