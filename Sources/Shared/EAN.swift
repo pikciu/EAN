@@ -1,17 +1,21 @@
 import Foundation
 
 public struct EAN: RawRepresentable, Hashable {
+    public enum Variant {
+        case ean8
+        case ean13
+    }
     public let code: [Int]
     public let checksum: Int
     
-    let isEAN13: Bool
+    public let variant: Variant
     
     private var separatorIndex: Int {
-        isEAN13 ? 7 : 4
+        variant == .ean13 ? 7 : 4
     }
     
     private var startIndex: Int {
-        isEAN13 ? 1 : 0
+        variant == .ean13 ? 1 : 0
     }
     
     var left: ArraySlice<Int> {
@@ -30,7 +34,7 @@ public struct EAN: RawRepresentable, Hashable {
     
     private init?(code: [Int], checksum: Int?) {
         self.code = code
-        self.isEAN13 = code.count == 12
+        self.variant = code.count == 12 ? .ean13 : .ean8
         if let checksum {
             if EANChecksum.isValid(code: code, checksum: checksum) {
                 self.checksum = checksum

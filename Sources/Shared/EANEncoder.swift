@@ -77,16 +77,17 @@ public final class EANEncoder {
     
     private func segments(for ean: EAN) -> [[Segment]] {
         var segments = [Segment.leftMargin, Segment.startStop]
-        if ean.isEAN13 {
+        switch ean.variant {
+        case .ean8:
+            segments += ean.left.map { digit in
+                Encoding.a.segments(for: digit)
+            }
+        case .ean13:
             let scheme = Encoding.schmes[ean.code[0]] ?? []
             segments += zip(scheme, ean.left)
                 .map { encoding, digit in
                     encoding.segments(for: digit)
                 }
-        } else {
-            segments += ean.left.map { digit in
-                Encoding.a.segments(for: digit)
-            }
         }
         
         segments += [Segment.separator]
